@@ -4,6 +4,7 @@ Simple project showing how to use spring 4 for build API using restful concepts.
 For run the example:
 -Create database in pgAdmin.
 -Put your database name and password in application.properties File.
+-start embedded tomcat in class SocialbooksapiApplication.java
 -for test micro services use:
   (GET, POST, PUT, DELETE) in Postman or RestClient
   
