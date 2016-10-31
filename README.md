@@ -8,8 +8,8 @@ For run the example:
   (GET, POST, PUT, DELETE) in Postman or RestClient
   
  -URL's micro services:
- http://localhost:8080/livros/
- http://localhost:8080/livros/id
+ http://localhost:8080/livros/ -
+ http://localhost:8080/livros/id -
  http://localhost:8080/livros/id/comentarios
  
   
