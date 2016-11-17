@@ -2,8 +2,10 @@ package com.example.handler;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -55,6 +57,32 @@ public class ResourceExceptionHandler {
 		error.setTimestamp(System.currentTimeMillis());
 		
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+	}
+	
+	@ExceptionHandler(DataIntegrityViolationException.class)
+	public ResponseEntity<DetalhesError> handleDataIntegrityViolationException
+		(DataIntegrityViolationException e, HttpServletRequest request){
+		
+		DetalhesError error = new DetalhesError();
+		error.setStatus(400l);
+		error.setTitulo("Requisição inválida!!!");
+		error.setMsgDesenvolvedor("http://socialbooksapi.com/400");
+		error.setTimestamp(System.currentTimeMillis());
+		
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+	}
+	
+	@ExceptionHandler(HttpMessageNotReadableException.class)
+	public ResponseEntity<DetalhesError> handleHttpMessageNotReadableException
+		(HttpMessageNotReadableException e, HttpServletRequest request){
+		
+		DetalhesError error = new DetalhesError();
+		error.setStatus(400l);
+		error.setTitulo("Formatação JSON inválida!!!");
+		error.setMsgDesenvolvedor("http://socialbooksapi.com/406");
+		error.setTimestamp(System.currentTimeMillis());
+		
+		return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(error);
 	}
 
 }

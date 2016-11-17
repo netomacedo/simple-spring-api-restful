@@ -3,6 +3,8 @@ package com.example.resources;
 import java.net.URI;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,9 +33,9 @@ public class LivrosResoures {
 	}
 	
 	//@RequestBody diz ao spring que pegue o que vem na requisição e coloque no obj livro.
-	//sem ele nao se obtem as info do obj livro
+	//sem ele nao se tem as informações do objeto livro
 	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<Void> salvar(@RequestBody Livro livro){
+	public ResponseEntity<Void> salvar(@Valid @RequestBody Livro livro){
 		livro = livroService.salvar(livro);
 		
 		//cabecalho location setado no headers, retornando a uri para acesso

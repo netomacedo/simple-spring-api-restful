@@ -8,7 +8,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -21,13 +25,16 @@ public class Autor {
 	@JsonInclude(Include.NON_NULL)
 	private Long id;
 	
-	@JsonInclude(Include.NON_NULL)
+	@NotEmpty(message="Nome não pode ser vazio!")
 	private String nome;
 	
 	@JsonInclude(Include.NON_NULL)
+	@JsonFormat(pattern = "dd/MM/yyyy")
+	@NotNull(message="Data de Nascimento é obrigatório!")
 	private Date nascimento;
 	
 	@JsonInclude(Include.NON_NULL)
+	@NotNull(message="Data de Nascimento é obrigatório!")
 	private String nacionalidade;
 	
 	@OneToMany(mappedBy = "autor")
