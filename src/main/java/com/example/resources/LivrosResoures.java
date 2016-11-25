@@ -2,12 +2,16 @@ package com.example.resources;
 
 import java.net.URI;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,9 +53,12 @@ public class LivrosResoures {
 	//bind do que vem da uri passando para o banco para pesquisa
 	@RequestMapping(value = "/{id}", method=RequestMethod.GET)
 	public ResponseEntity<?> buscar(@PathVariable("id") Long id){
-		Livro livro = livroService.buscar(id);		
+		Livro livro = livroService.buscar(id);	
+		//implementando cache na busca
+		CacheControl cacheControl = CacheControl.maxAge(20, TimeUnit.SECONDS);
 		//encapsula o obj seta o status da resposta e coloca o obj no corpo da msg
-		return ResponseEntity.status(HttpStatus.OK).body(livro);//200 OK
+		return ResponseEntity.status(HttpStatus.OK).cacheControl(cacheControl)
+				.body(livro);//200 OK
 	}
 	
 	@RequestMapping(value = "/{id}", method=RequestMethod.DELETE)
@@ -69,8 +76,11 @@ public class LivrosResoures {
 	}
 	
 	@RequestMapping(value="/{id}/comentarios", method=RequestMethod.POST)
-	public ResponseEntity<Void> adicionarComentario(@PathVariable("id") Long livroId,
-			@RequestBody Comentario comentario){
+	public ResponseEntity<Void> adicionarComentario(@PathVariable("id") Long livroId,@RequestBody Comentario comentario){
+		
+		//capturar contexto atual de segurança 
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		comentario.setUsuario(auth.getName());
 		
 		livroService.salvarComentario(livroId, comentario);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
