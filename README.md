@@ -6,9 +6,10 @@ For run the example:
 -Put your database name and password in application.properties File.
 -start embedded tomcat in class SocialbooksapiApplication.java
 -for test micro services use:
+  simple-client-restful-api for consume the API
+  OR
   In Postman click in Authorization -> choose Basic auth an put user:test password:pwd123
   and after that use: (GET, POST, PUT, DELETE)with JSON format in Postman or RestClient
-  
   
   -URL's micro services autores: 
  http://localhost:8080/autores/ -
